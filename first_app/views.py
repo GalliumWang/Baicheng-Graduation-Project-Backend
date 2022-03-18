@@ -33,11 +33,14 @@ def predict_view(request):
 
 def airplane_id_view(request):
     if request.method == 'POST':
-        res_data = airplane_id.airplane_id_search('AB1015')
-        # 传给前端 json
-        # json_records = res_data.to_json(orient="records")
-        json_data = res_data.to_json(orient='records')
-        return HttpResponse("placeholder", content_type='application/json', charset='utf-8')
+        # res_data = airplane_id.airplane_id_search('AB1015')
+        # # 传给前端 json
+        # # json_records = res_data.to_json(orient="records")
+        # json_data = res_data.to_json(orient='records')
+        text_content = None
+        with open('airplane_id.json') as f:
+            text_content = f.read()
+        return HttpResponse(text_content, content_type='application/json', charset='utf-8')
     else:
         return HttpResponse('方法错误')
 
