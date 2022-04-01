@@ -3,6 +3,11 @@ import pandas as pd
 import json
 from django.http import HttpResponse
 from .algorithm import predict, airplane_id, feature_importance
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+from django.conf import settings
+import os
+
 # Create your views here.
 
 # user_train = pd.read_csv(
@@ -23,6 +28,11 @@ def predict_view(request):
         # t = [{'predict': json.loads(
         #     predict_json_data), 'feature_importance': json.loads(feature_json_data)}]
         # json_data = json.dumps(t)
+
+        csv_file = request.FILES['file']
+        path = default_storage.save('temp/upload.csv', ContentFile(csv_file.read()))
+        tmp_file = os.path.join(settings.MEDIA_ROOT, path)
+
         text_content = None
         with open('predict_data.json') as f:
             text_content = f.read()
